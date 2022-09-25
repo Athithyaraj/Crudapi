@@ -1,4 +1,4 @@
-﻿using Crudapi.Data;
+using Crudapi.Data;
 using Crudapi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -38,7 +38,7 @@ namespace Crudapi.Controllers
             // return View();
         }
 
-        [HttpPut]
+        [HttpPatch]
         [Route("{id:int}")]
         public async Task<IActionResult> UpdateContacts([FromRoute] int id, UpdateContactRequest updateContactsRequest)
         {
@@ -47,9 +47,20 @@ namespace Crudapi.Controllers
             {
                 string tokens = "632ea828-d4f1-449d-bd7f-cee8888b1706";
                 if (tokens == updateContactsRequest.token) {
-                    contact.empcode = updateContactsRequest.empcode;
-                    contact.empname = updateContactsRequest.empname;
-                    contact.doj = updateContactsRequest.doj;
+                    if(updateContactsRequest.empcode != null)
+                    {
+                        contact.empcode = updateContactsRequest.empcode;
+                    }
+                    if (updateContactsRequest.empname != null)
+                    {
+                        contact.empname = updateContactsRequest.empname;
+                    }
+                    //if (updateContactsRequest.doj != null)
+                    //{
+                    //    contact.doj = updateContactsRequest.doj;
+                    //}
+                    //contact.empname = updateContactsRequest.empname;
+                    
                     await dbContext.SaveChangesAsync();
                     return Ok(contact);
                 }
